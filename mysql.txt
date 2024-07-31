@@ -1,0 +1,10 @@
+CREATE DATABASE leads;
+
+USE leads;
+
+CREATE TABLE EMAIL(
+id INT auto_increment PRIMARY KEY,
+nome VARCHAR(100) NOT NULL,
+email VARCHAR(100) NOT NULL,
+telefone VARCHAR(15) NOT NULL
+);
