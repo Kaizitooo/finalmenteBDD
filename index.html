@@ -3,10 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="stylesheet.css"/>
     <title>Atividade</title>
 </head>
 <body>
+    <style>
+        
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #4a54f1, #292953); /* Gradiente diagonal de azul claro para azul escuro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background: #16226d; /* Azul médio para a caixa do formulário */
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra mais destacada para contraste */
+    max-width: 320px; /* Menor largura para o formulário */
+    width: 100%;
+    color: #ffffff; /* Cor do texto dentro da caixa do formulário */
+    position: relative;
+    overflow: hidden;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    animation: pulse 4s infinite;
+    z-index: 0;
+}
+
+@keyframes pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 1;
+    }
+}
+
+h2 {
+    margin-bottom: 1.5rem;
+    color: #ffffff; /* Cor branca para o título */
+    text-align: center;
+    font-family: 'Playfair Display', serif; /* Fonte sofisticada para o título */
+    font-weight: 700; /* Peso da fonte mais grosso */
+    position: relative;
+    z-index: 1; /* Garantir que o título fique acima do fundo pulsante */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1; /* Garantir que o formulário fique acima do fundo pulsante */
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"] {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #7a8cce; /* Azul claro para a borda dos campos */
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    background: #ffffff; /* Fundo branco para os campos de entrada */
+    color: #292953; /* Texto escuro para contraste */
+    transition: all 0.3s ease; /* Transição suave para animação */
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus {
+    border-color: #1f28ac; /* Azul escuro para o foco */
+    box-shadow: 0 0 8px rgba(31, 40, 172, 0.5); /* Sombra azul ao redor do campo em foco */
+    outline: none; /* Remove o contorno padrão do navegador */
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="tel"]::placeholder {
+    color: #6e7b9c; /* Azul mais claro para o texto do placeholder */
+    transition: opacity 0.3s ease; /* Transição suave para o placeholder */
+}
+
+button {
+    padding: 0.75rem;
+    background-color: #1f28ac; /* Azul claro para o botão */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease; /* Transições suaves para animação */
+    position: relative;
+    z-index: 1; /* Garantir que o botão fique acima do fundo pulsante */
+}
+
+button:hover {
+    background-color: #3b43e1; /* Azul um pouco mais escuro para o hover */
+    transform: translateY(-2px); /* Efeito de elevação no hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Sombra maior no hover */
+}
+
+button:active {
+    background-color: #0c1adf; /* Azul ainda mais escuro para o active */
+    transform: translateY(1px); /* Efeito de afundamento no clique */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Sombra menor no clique */
+}
+    </style>
+    
     <div class="container">
         <h2>Formulário de Contato</h2>
         <form action="/submit" method="POST">
@@ -16,5 +141,44 @@
             <button type="submit">Enviar</button>
         </form>
     </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Telefone</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody id="dataTable">
+        </tbody>
+    </table>
+
+    <script>
+        function fetchData(){
+            fetch('./getData')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('dataTable');
+                tableBody.innerHTML = '';
+                data.forEach(row => {
+                    tableBody.innerHTML += `
+                    <tr>
+                            <td contenteditable='true'>${row.nome}</td>
+                            <td contenteditable='true'>${row.email}</td>
+                            <td contenteditable='true'>${row.telefone}</td>
+                            <td>
+                                <button class="icon-button" onclick="deleteData(${row.id})">🗑</button>
+                                <button class="icon-button" onclick="updateData(${row.id})">📝</button>    
+                            </td>
+                        </tr>
+                    `;
+
+                });
+            })
+        }
+    </script>
+
 </body>
 </html>

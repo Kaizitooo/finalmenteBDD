@@ -8,3 +8,6 @@ nome VARCHAR(100) NOT NULL,
 email VARCHAR(100) NOT NULL,
 telefone VARCHAR(15) NOT NULL
 );
+
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+flush privileges;
